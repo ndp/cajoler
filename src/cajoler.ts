@@ -64,7 +64,8 @@ function show(html: string, options: CajolerOptions): void {
   actions.classList.add('actions')
   container.append(actions)
 
-  if (options.no?.verb) actions.append(button(3, options.no, defaults.no, close))
+  if (options.no?.verb)
+    actions.append(button(3, options.no, defaults.no, close))
 
   if (options.maybe?.verb)
     actions.append(button(2, options.maybe, defaults.maybe, close))
