@@ -9,10 +9,16 @@ import { cajoler } from './cajoler'
 
 cajoler(
   'foox',
-  'You are using in insecure connection. Amp-what supports HTTPS.',
+  'You are using an insecure connection. Amp-what supports HTTPS.',
   {
-    yesVerb: 'Switch to a Secure Connection',
-    maybeVerb: 'Ask Me Later',
-    noVerb: 'Dismiss',
+    yes:   {
+      verb: 'Switch to a Secure Connection'
+    },
+    maybe: {
+      verb: 'Ask Me Later'
+    },
+    no:    {
+      verb: 'Dismiss'
+    }
   }
 )

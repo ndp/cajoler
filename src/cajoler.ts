@@ -5,36 +5,44 @@
  */
 import { Remember } from './remember/remember'
 
+interface ButtonOptions {
+  callback?: () => void
+  verb?: string
+}
 
 interface CajolerOptions {
-  yesCallback?: () => void // What to do if the user clicks "Yes" to dismiss.
-  yesVerb?: string // default: 'OK'  Confirmation button text.
-  maybeCallback?: () => void // override text of the Maybe Later button
-  maybeVerb?: string // default: '' (do not show a button)
-  noCallback?: () => void // override text of the No button
-  noVerb?: string // default: '' (do not show a button)
+  yes?: ButtonOptions // What to do if the user clicks "Yes" to dismiss.
+  no?: ButtonOptions
+  maybe?: ButtonOptions
   delay?: number // default: 1000, how long to wait to show alert
 }
 
 const defaults = {
-  yesVerb: 'OK',
-  noVerb:  '',
-  maybeVerb:  '',
-  delay:   1000,
+  yes:   {
+    verb: 'OK'
+  },
+  no:    {
+    verb: ''
+  },
+  maybe: {
+    verb: ''
+  },
+  delay: 1000,
 }
 
 type Cajoler = {
   (key: string, html: string, options: CajolerOptions): void
 }
 
-function button (verb: 'yes' | 'no' | 'maybe', options: CajolerOptions, close: () => void) {
-  const labelProp = `${verb}Verb` as 'yesVerb' | 'noVerb' | 'maybeVerb'
-  const cb = `${verb}Callback` as 'yesCallback' | 'noCallback' | 'maybeCallback'
-
+function button (
+  options: ButtonOptions,
+  defaultOptions: { verb: string, callback?: () => void },
+  close: () => void
+) {
   const b = document.createElement('BUTTON')
-  b.innerHTML = options[labelProp] || defaults[labelProp]
+  b.innerHTML = options.verb || defaultOptions.verb
   b.addEventListener('click', function (_e: MouseEvent) {
-    options[cb] && options[cb]
+    options.callback && options.callback()
     close()
   })
   return b
@@ -53,13 +61,13 @@ function show (html: string, options: CajolerOptions): void {
   actions.classList.add('actions')
   container.append(actions)
 
-  if (options.noVerb)
-    actions.append(button('no', options, close))
+  if (options.no?.verb)
+    actions.append(button(options.no, defaults.no, close))
 
-  if (options.maybeVerb)
-    actions.append(button('maybe', options, close))
+  if (options.maybe?.verb)
+    actions.append(button(options.maybe, defaults.maybe, close))
 
-  actions.append(button('yes', options, close))
+  actions.append(button(options.yes || {}, defaults.yes, close))
 
   setTimeout(() => {
     const body = document.getElementsByTagName('body')[0]
@@ -85,19 +93,25 @@ export const cajoler: Cajoler = function (
   // If we already have stored something, we don't do it again
   if (store.read(storeKey) !== '') return
 
-  const yesCallback = options.yesCallback
-  options.yesCallback = () => {
-    if (yesCallback) yesCallback()
-    store.write(storeKey, 'yes')
-  }
-
-  const noCallback = options.noCallback
-  options.noCallback = () => {
-    if (noCallback) noCallback()
-    store.write(storeKey, 'no')
-  }
-
-  // maybe does not remember the setting... we'll ask next time.
+  options.yes = addRememberCallback(options.yes || {}, 'yes')
+  options.no = addRememberCallback(options.no || {}, 'no')
+  // "maybe" does not remember the setting... we'll ask next time.
 
   show(html, options)
+
+  function addRememberCallback (
+    options: ButtonOptions,
+    value: string
+  ) {
+    const originalCallback = options.callback
+    return {
+      ...options,
+      callback: () => {
+        if (originalCallback) originalCallback()
+        store.write(storeKey, value)
+      }
+    }
+  }
+
+
 }
