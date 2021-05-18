@@ -18,37 +18,37 @@ interface CajolerOptions {
 }
 
 const defaults = {
-  yes:   {
+  yes: {
     verb: 'OK'
   },
-  no:    {
+  no: {
     verb: ''
   },
   maybe: {
     verb: ''
   },
-  delay: 1000,
+  delay: 1000
 }
 
 type Cajoler = {
   (key: string, html: string, options: CajolerOptions): void
 }
 
-function button (
+function button(
   options: ButtonOptions,
-  defaultOptions: { verb: string, callback?: () => void },
+  defaultOptions: { verb: string; callback?: () => void },
   close: () => void
 ) {
   const b = document.createElement('BUTTON')
   b.innerHTML = options.verb || defaultOptions.verb
-  b.addEventListener('click', function (_e: MouseEvent) {
+  b.addEventListener('click', function(_e: MouseEvent) {
     options.callback && options.callback()
     close()
   })
   return b
 }
 
-function show (html: string, options: CajolerOptions): void {
+function show(html: string, options: CajolerOptions): void {
   const container = document.createElement('DIV')
   container.classList.add('cajoler')
   const content = document.createElement('DIV')
@@ -61,8 +61,7 @@ function show (html: string, options: CajolerOptions): void {
   actions.classList.add('actions')
   container.append(actions)
 
-  if (options.no?.verb)
-    actions.append(button(options.no, defaults.no, close))
+  if (options.no?.verb) actions.append(button(options.no, defaults.no, close))
 
   if (options.maybe?.verb)
     actions.append(button(options.maybe, defaults.maybe, close))
@@ -74,18 +73,13 @@ function show (html: string, options: CajolerOptions): void {
     body.appendChild(container)
   }, options.delay || defaults.delay)
 
-  function close () {
+  function close() {
     const body = document.getElementsByTagName('body')[0]
     body.removeChild(container)
   }
 }
 
-export const cajoler: Cajoler = function (
-  key,
-  html,
-  options = {}
-): void {
-
+export const cajoler: Cajoler = function(key, html, options = {}): void {
   const store = new Remember()
 
   let storeKey = `stasher-${key}`
@@ -99,10 +93,7 @@ export const cajoler: Cajoler = function (
 
   show(html, options)
 
-  function addRememberCallback (
-    options: ButtonOptions,
-    value: string
-  ) {
+  function addRememberCallback(options: ButtonOptions, value: string) {
     const originalCallback = options.callback
     return {
       ...options,
@@ -112,6 +103,4 @@ export const cajoler: Cajoler = function (
       }
     }
   }
-
-
 }

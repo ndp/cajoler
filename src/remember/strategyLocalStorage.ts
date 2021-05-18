@@ -32,5 +32,5 @@ export const strategyLocalStorage: IRemember = {
   write(key: string, value: string): string {
     window['localStorage'].setItem(key, value)
     return value
-  },
+  }
 }

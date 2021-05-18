@@ -3,6 +3,7 @@
   <style type='text/css'>
 
     .cajoler {
+      z-index: 1; /* Sit on top */
       position: fixed;
       top: 0;
       left: 0;
@@ -17,6 +18,18 @@
       font-family: courier, monospace;
       font-size: medium;
       color: antiquewhite;
+      animation-name: animatetop;
+      animation-duration: 0.7s
+    }
+
+    .cajoler .header {
+
+    }
+    .cajoler .header h6 {
+
+    }
+    .cajoler .header .close {
+
     }
 
     .cajoler .actions {
@@ -28,6 +41,11 @@
       font-size: medium;
       padding: 5px 10px;
       margin-left: 20px;
+    }
+
+    @keyframes animatetop {
+      from {top: -300px; opacity: 0}
+      to {top: 0; opacity: 1}
     }
 
   </style>

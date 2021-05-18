@@ -23,5 +23,5 @@ export const strategyCookie: IRemember = {
   write(key: string, value: string): string {
     theDocument().cookie = key + '=' + value + '; path=/'
     return value
-  },
+  }
 }

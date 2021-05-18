@@ -26,10 +26,12 @@
     }
   },
   "prettier": {
+    "useTabs": false,
+    "tabWidth": 2,
     "printWidth": 80,
     "semi": false,
     "singleQuote": true,
-    "trailingComma": "es5"
+    "trailingComma": "none"
   },
   "name": "cajoler",
   "author": "Andrew Peterson",
