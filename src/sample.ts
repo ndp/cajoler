@@ -7,7 +7,10 @@
 
 import { cajoler } from './cajoler'
 
-cajoler('foox',
-        'You are using in insecure connection. Amp-what supports HTTPS.', {
-          dismissPrompt: 'Switch to https:'
-})
+cajoler(
+  'foox',
+  'You are using in insecure connection. Amp-what supports HTTPS.',
+  {
+    dismissPrompt: 'Switch to https:',
+  }
+)

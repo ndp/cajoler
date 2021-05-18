@@ -3,10 +3,12 @@ let doc: Partial<HTMLDocument> | null = null
 
 const theDocument = (): Partial<HTMLDocument> => doc || document
 
-export const injectDocument = (d: Partial<HTMLDocument>): Partial<HTMLDocument> => doc = d
+export const injectDocument = (
+  d: Partial<HTMLDocument>
+): Partial<HTMLDocument> => (doc = d)
 
 export const strategyCookie: IRemember = {
-  read (key: string): string {
+  read(key: string): string {
     const nameEQ = key + '='
     const cookies: string | undefined = theDocument().cookie
     if (typeof cookies === 'undefined') return ''
@@ -18,8 +20,8 @@ export const strategyCookie: IRemember = {
     }
     return ''
   },
-  write (key: string, value: string): string {
+  write(key: string, value: string): string {
     theDocument().cookie = key + '=' + value + '; path=/'
     return value
-  }
+  },
 }

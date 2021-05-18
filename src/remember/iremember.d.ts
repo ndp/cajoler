@@ -1,5 +1,5 @@
 interface IRemember {
-  read (key: string): string
+  read(key: string): string
 
-  write (key: string, value: string): string
+  write(key: string, value: string): string
 }
