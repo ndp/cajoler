@@ -15,6 +15,7 @@ interface CajolerOptions {
   no?: ButtonOptions
   maybe?: ButtonOptions
   delay?: number // default: 1000, how long to wait to show alert
+  showFilter?: (previousButton: string) => boolean
 }
 
 const defaults = {
@@ -27,7 +28,10 @@ const defaults = {
   maybe: {
     verb: ''
   },
-  delay: 1000
+  delay: 1000,
+
+  // If we already have stored something, we don't do it again
+  showFilter: (previousValue: string): boolean => previousValue === ''
 }
 
 type Cajoler = {
@@ -86,11 +90,11 @@ function show(html: string, options: CajolerOptions): void {
 
 export const cajoler: Cajoler = function(key, html, options = {}): void {
   const store = new Remember()
+  const storeKey = `cajole-${key}`
+  const previousValue = store.read(storeKey)
 
-  let storeKey = `stasher-${key}`
-
-  // If we already have stored something, we don't do it again
-  if (store.read(storeKey) !== '') return
+  const showFilter = options.showFilter || defaults.showFilter
+  if (showFilter(previousValue) == false) return
 
   options.yes = addRememberCallback(options.yes || {}, 'yes')
   options.no = addRememberCallback(options.no || {}, 'no')
