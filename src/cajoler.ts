@@ -35,12 +35,14 @@ type Cajoler = {
 }
 
 function button(
+  tabIndex: number,
   options: ButtonOptions,
   defaultOptions: { verb: string; callback?: () => void },
   close: () => void
 ) {
   const b = document.createElement('BUTTON')
   b.innerHTML = options.verb || defaultOptions.verb
+  b.tabIndex = tabIndex
   b.addEventListener('click', function(_e: MouseEvent) {
     options.callback && options.callback()
     close()
@@ -62,12 +64,12 @@ function show(html: string, options: CajolerOptions): void {
   actions.classList.add('actions')
   container.append(actions)
 
-  if (options.no?.verb) actions.append(button(options.no, defaults.no, close))
+  if (options.no?.verb) actions.append(button(3, options.no, defaults.no, close))
 
   if (options.maybe?.verb)
-    actions.append(button(options.maybe, defaults.maybe, close))
+    actions.append(button(2, options.maybe, defaults.maybe, close))
 
-  actions.append(button(options.yes || {}, defaults.yes, close))
+  actions.append(button(1, options.yes || {}, defaults.yes, close))
 
   setTimeout(() => {
     const body = document.getElementsByTagName('body')[0]
