@@ -16,7 +16,7 @@
     "test": "tsdx test",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
-    "prettier": "./node_modules/.bin/prettier --write src/*.ts src/remember/*.ts test/*.ts",
+    "prettier": "./node_modules/.bin/prettier --write src/*.ts src/browser-storage/*.ts test/*.ts",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },

@@ -3,7 +3,7 @@
  *
  * new Cajoler(key: string, html:
  */
-import { Remember } from './remember/remember'
+import { BrowserStorage } from './browser-storage/browser-storage'
 
 interface ButtonOptions {
   callback?: () => void
@@ -89,12 +89,12 @@ function show(html: string, options: CajolerOptions): void {
 }
 
 export const cajoler: Cajoler = function(key, html, options = {}): void {
-  const store = new Remember()
+  const store = new BrowserStorage()
   const storeKey = `cajole-${key}`
   const previousValue = store.read(storeKey)
 
   const showFilter = options.showFilter || defaults.showFilter
-  if (showFilter(previousValue) == false) return
+  if (showFilter(previousValue) === false) return
 
   options.yes = addRememberCallback(options.yes || {}, 'yes')
   options.no = addRememberCallback(options.no || {}, 'no')

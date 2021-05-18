@@ -1,11 +1,16 @@
-import { storageAvailable, strategyLocalStorage } from './strategyLocalStorage'
+import {
+  localStorageAvailable,
+  strategyLocalStorage
+} from './strategyLocalStorage'
 import { strategyCookie } from './strategyCookie'
 
-export class Remember implements IRemember {
-  strategy: IRemember
+export class BrowserStorage implements StorageProxy {
+  strategy: StorageProxy
 
   constructor() {
-    this.strategy = storageAvailable() ? strategyLocalStorage : strategyCookie
+    this.strategy = localStorageAvailable()
+      ? strategyLocalStorage
+      : strategyCookie
   }
 
   read(key: string): string {

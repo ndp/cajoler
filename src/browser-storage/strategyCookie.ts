@@ -7,7 +7,7 @@ export const injectDocument = (
   d: Partial<HTMLDocument>
 ): Partial<HTMLDocument> => (doc = d)
 
-export const strategyCookie: IRemember = {
+export const strategyCookie: StorageProxy = {
   read(key: string): string {
     const nameEQ = key + '='
     const cookies: string | undefined = theDocument().cookie

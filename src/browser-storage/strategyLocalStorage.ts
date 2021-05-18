@@ -1,5 +1,5 @@
 // from https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
-export function storageAvailable(): boolean {
+export function localStorageAvailable(): boolean {
   const storage = window['localStorage']
   try {
     var x = '__storage_test__'
@@ -25,7 +25,7 @@ export function storageAvailable(): boolean {
   }
 }
 
-export const strategyLocalStorage: IRemember = {
+export const strategyLocalStorage: StorageProxy = {
   read(key: string): string {
     return window['localStorage'].getItem(key) || ''
   },
