@@ -22,6 +22,12 @@
       animation-duration: 0.7s
     }
 
+    .cajoler.closed {
+      opacity: 0;
+      animation-name: animateup;
+      animation-duration: 0.3s
+    }
+
     .cajoler .header {
 
     }
@@ -46,6 +52,11 @@
     @keyframes animatetop {
       from {top: -300px; opacity: 0}
       to {top: 0; opacity: 1}
+    }
+
+    @keyframes animateup {
+      from {top: 0; opacity: 1}
+      to {top: -300px; opacity: 0}
     }
 
   </style>

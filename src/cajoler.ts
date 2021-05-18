@@ -53,6 +53,7 @@ function show(html: string, options: CajolerOptions): void {
   container.classList.add('cajoler')
   const content = document.createElement('DIV')
   content.classList.add('content')
+  content.addEventListener('click', (_e: MouseEvent) => close())
   container.append(content)
 
   content.innerHTML = html
@@ -75,7 +76,8 @@ function show(html: string, options: CajolerOptions): void {
 
   function close() {
     const body = document.getElementsByTagName('body')[0]
-    body.removeChild(container)
+    container.classList.add('closed')
+    setTimeout(() => body.removeChild(container), 2000)
   }
 }
 
