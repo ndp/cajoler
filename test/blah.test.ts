@@ -1,4 +1,4 @@
-const sum = (a, b) => a + b
+const sum = (a: any, b: any) => a + b
 
 describe('blah', () => {
   it('works', () => {
