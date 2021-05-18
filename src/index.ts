@@ -11,6 +11,8 @@ cajoler(
   'foox',
   'You are using in insecure connection. Amp-what supports HTTPS.',
   {
-    dismissPrompt: 'Switch to https:',
+    yesVerb: 'Switch to a Secure Connection',
+    maybeVerb: 'Ask Me Later',
+    noVerb: 'Dismiss',
   }
 )
