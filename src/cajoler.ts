@@ -96,20 +96,42 @@ export const cajoler: Cajoler = function(key, html, options = {}): void {
   const showFilter = options.showFilter || defaults.showFilter
   if (showFilter(previousValue) === false) return
 
-  options.yes = addRememberCallback(options.yes || {}, 'yes')
-  options.no = addRememberCallback(options.no || {}, 'no')
-  // "maybe" does not remember the setting... we'll ask next time.
+  options.yes = chainOntoCallbackProp(
+    options.yes || defaults.yes,
+    'callback',
+    () => store.write(storeKey, 'yes')
+  )
+  options.no = chainOntoCallbackProp(
+    options.no || defaults.no,
+    'callback',
+    () => store.write(storeKey, 'no')
+  )
+  // "maybe" button doesn't remember the setting... we'll ask next time.
 
   show(html, options)
+}
 
-  function addRememberCallback(options: ButtonOptions, value: string) {
-    const originalCallback = options.callback
-    return {
-      ...options,
-      callback: () => {
-        if (originalCallback) originalCallback()
-        store.write(storeKey, value)
-      }
+/**
+ * Given an object with a property `prop`, returns a new object
+ * with a new `prop`.
+ * - if `prop`'s already a function, chains onto it with callback2
+ * - if `prop` is not a function, will simply call callback2
+ * @param {O} o
+ * @param {string} prop
+ * @param {Function} callback2
+ * @returns {O}
+ */
+function chainOntoCallbackProp<O extends { [k: string]: any }>(
+  o: O,
+  prop: string,
+  callback2: Function
+): O {
+  const originalCallback = o[prop] as Function
+  return {
+    ...o,
+    [prop]: (...args: any[]) => {
+      if (originalCallback) originalCallback(...args)
+      return callback2(...args)
     }
   }
 }
