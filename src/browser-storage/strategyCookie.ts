@@ -21,7 +21,7 @@ export const strategyCookie: StorageProxy = {
     return ''
   },
   write(key: string, value: string): string {
-    theDocument().cookie = key + '=' + value + '; path=/'
+    theDocument().cookie = key + '=' + value + '; Max-Age: 7776000; path=/; SameSite=Strict;'
     return value
   }
 }
