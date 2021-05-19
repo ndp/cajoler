@@ -14,7 +14,8 @@ interface CajolerOptions {
   yes?: ButtonOptions // What to do if the user clicks "Yes" to dismiss.
   no?: ButtonOptions
   maybe?: ButtonOptions
-  delay?: number // default: 1000, how long to wait to show alert
+  delay?: number //   default:  1,000, how long to wait to show alert
+  timeout?: number // default: 60,000, how long to leave the dialog up before automatically closing
   showFilter?: (previousButton: string) => boolean
 }
 
@@ -29,6 +30,7 @@ const defaults = {
     verb: ''
   },
   delay: 1000,
+  timeout: 60 * 1000,
 
   // If we already have stored something, we don't do it again
   showFilter: (previousValue: string): boolean => previousValue === ''
@@ -81,7 +83,12 @@ function show(html: string, options: CajolerOptions): void {
     body.appendChild(container)
   }, options.delay || defaults.delay)
 
+  const autoClose = setTimeout(() => {
+    close()
+  }, options.timeout || defaults.timeout)
+
   function close() {
+    clearTimeout(autoClose)
     const body = document.getElementsByTagName('body')[0]
     container.classList.add('closed')
     setTimeout(() => body.removeChild(container), 2000)
