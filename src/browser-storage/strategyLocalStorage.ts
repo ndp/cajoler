@@ -1,8 +1,9 @@
 // from https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
 export function localStorageAvailable(): boolean {
-  const storage = window['localStorage']
+  let storage: Storage | null = null
   try {
-    var x = '__storage_test__'
+    storage = window['localStorage']
+    const x = '__storage_test__'
     storage.setItem(x, x)
     storage.removeItem(x)
     return true
@@ -19,7 +20,7 @@ export function localStorageAvailable(): boolean {
         // Firefox
         e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
       // acknowledge QuotaExceededError only if there's something already stored
-      storage &&
+      storage !== null &&
       storage.length !== 0
     )
   }
