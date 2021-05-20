@@ -46,7 +46,14 @@ The whole interface is one call, `cajoler`, and the usage requires three paramet
 * `showFilter`: A function that returns `true` if the cajoling message should be shown to the user. It is passed a value
   of the previous button the user chose. If the user has not chosen before, or local data has been deleted, the
   parameter will be an empty string.
-    
+  
+### CSS
+
+Styles can be imported¹ from `cajoler/src/cajoler.css`. To customize colors or anything else, simply use the cascade, and
+override selectors. Everything is name-spaced inside `.cajoler`, and it's pretty easy to do your own thing. If you don't want to use this class name, override the option `cssClass` in the options.
+
+¹ I used a configuration with webpack and `html-webpack-plugin` and `css-loader`, but you can do it your own way.
+
 ## Development
 
 Build using TSDX.

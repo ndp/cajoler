@@ -1,0 +1,63 @@
+.cajoler {
+  z-index: 1;
+  position: fixed;
+  left: 0;
+  margin: 1vw;
+  width: 98vw;
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: #333;
+  border: 1px solid black;
+  box-shadow: 1px 2px 3px grey;
+  border-radius: 4px;
+  font-family: courier, monospace;
+  font-size: medium;
+  color: antiquewhite;
+  animation-name: cajoler-animatetop;
+  animation-duration: 0.7s
+}
+
+.cajoler.bottom {
+  bottom: 0;
+}
+
+.cajoler.top {
+  top: 0;
+}
+
+.cajoler.closed {
+  opacity: 0;
+  animation-name: cajoler-animateup;
+  animation-duration: 0.3s
+}
+
+.cajoler .header {
+
+}
+.cajoler .header h6 {
+
+}
+.cajoler .header .close {
+
+}
+
+.cajoler .actions {
+  padding: 20px 0 0 0;
+  text-align: right;
+}
+
+.cajoler .actions button {
+  font-size: medium;
+  padding: 5px 10px;
+  margin-left: 20px;
+}
+
+@keyframes cajoler-animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+
+@keyframes cajoler-animateup {
+  from {top: 0; opacity: 1}
+  to {top: -300px; opacity: 0}
+}
