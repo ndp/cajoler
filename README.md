@@ -5,6 +5,8 @@ Encourage your visitors to do something, without being rude.
 ## Usage
 
 ```typescript
+import { cajoler } from 'cajoler'
+
 cajoler(
   'https',
   '<h2>Switch to a secure connection?</h2><p>Sites without the "s" in "https:" are susceptible to "wire-tapping" attacks. Curious or mallicious observers can easily see what you are doing. Although Amp-what has no personal information, it does support Https. </p>',
@@ -41,6 +43,8 @@ The whole interface is one call, `cajoler`, and the usage requires three paramet
     - `verb`: the name of the button signifying an "Maybe" answer
       ** A blank value indicates there is no "Maybe" button. (Default) **
     - `callback`: a function to call when the user selects "Maybe"
+* `position` Either `top` or `bottom`, determining where the alert is positioned.
+* `cssClass` The CSS class use for the wrapper component. If you change this from the default of `cajoler`, you'll need to do all your own CSS.
 * `delay` Milliseconds to wait before showing the alert. The default is 1000.
 * `timeout` Milliseconds to show the dialog before automatically closing it. The default is 60,000.
 * `showFilter`: A function that returns `true` if the cajoling message should be shown to the user. It is passed a value

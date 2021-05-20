@@ -17,6 +17,8 @@ interface CajolerOptions {
   delay?: number //   default:  1,000, how long to wait to show alert
   timeout?: number // default: 60,000, how long to leave the dialog up before automatically closing
   showFilter?: (previousButton: string) => boolean
+  position?: 'top' | 'bottom'
+  cssClass?: string
 }
 
 const defaults = {
@@ -31,6 +33,8 @@ const defaults = {
   },
   delay: 1000,
   timeout: 60 * 1000,
+  position: 'top',
+  cssClass: 'cajoler',
 
   // If we already have stored something, we don't do it again
   showFilter: (previousValue: string): boolean => previousValue === ''
@@ -58,7 +62,8 @@ function button(
 
 function show(html: string, options: CajolerOptions): void {
   const container = document.createElement('DIV')
-  container.classList.add('cajoler')
+  container.classList.add(options.cssClass || defaults.cssClass)
+  container.classList.add(options.position || defaults.position)
   const content = document.createElement('DIV')
   content.classList.add('content')
   content.addEventListener('click', (_e: MouseEvent) => close())
