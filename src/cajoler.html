@@ -1,67 +1,7 @@
 <html>
 <head>
-  <style type='text/css'>
-
-    .cajoler {
-      z-index: 1; /* Sit on top */
-      position: fixed;
-      top: 0;
-      left: 0;
-      margin: 1vw;
-      width: 98vw;
-      box-sizing: border-box;
-      padding: 20px;
-      background-color: #333;
-      border: 1px solid black;
-      box-shadow: 1px 2px 3px grey;
-      border-radius: 4px;
-      font-family: courier, monospace;
-      font-size: medium;
-      color: antiquewhite;
-      animation-name: animatetop;
-      animation-duration: 0.7s
-    }
-
-    .cajoler.closed {
-      opacity: 0;
-      animation-name: animateup;
-      animation-duration: 0.3s
-    }
-
-    .cajoler .header {
-
-    }
-    .cajoler .header h6 {
-
-    }
-    .cajoler .header .close {
-
-    }
-
-    .cajoler .actions {
-      padding: 20px 0 0 0;
-      text-align: right;
-    }
-
-    .cajoler .actions button {
-      font-size: medium;
-      padding: 5px 10px;
-      margin-left: 20px;
-    }
-
-    @keyframes animatetop {
-      from {top: -300px; opacity: 0}
-      to {top: 0; opacity: 1}
-    }
-
-    @keyframes animateup {
-      from {top: 0; opacity: 1}
-      to {top: -300px; opacity: 0}
-    }
-
-  </style>
+  <link href='/cajoler/src/cajoler.css' type='text/css' />
   <script type='text/javascript' src='/cajoler/dist/cajoler.esm.js'></script>
-
 </head>
 <body>
 <h1>Enlightenment is the only issue, the only guarantee of suffering. Leek can be covered with fluffy sauerkraut, also
