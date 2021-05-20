@@ -13,21 +13,22 @@
   font-family: courier, monospace;
   font-size: medium;
   color: antiquewhite;
-  animation-name: cajoler-animatetop;
   animation-duration: 0.7s
 }
 
 .cajoler.bottom {
+  animation-name: cajoler-animate-bottom;
   bottom: 0;
 }
 
 .cajoler.top {
+  animation-name: cajoler-animate-top;
   top: 0;
 }
 
 .cajoler.closed {
   opacity: 0;
-  animation-name: cajoler-animateup;
+  animation-name: cajoler-animate-up;
   animation-duration: 0.3s
 }
 
@@ -52,12 +53,17 @@
   margin-left: 20px;
 }
 
-@keyframes cajoler-animatetop {
+@keyframes cajoler-animate-top {
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
 }
 
-@keyframes cajoler-animateup {
+@keyframes cajoler-animate-bottom {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes cajoler-animate-up {
   from {top: 0; opacity: 1}
   to {top: -300px; opacity: 0}
 }
