@@ -1,6 +1,8 @@
 # Cajoler
 
-Encourage your visitors to do something, without being rude.
+Encourage your visitors to do something, without being rude. 
+
+Presents a dialog when called, if certain criteria are met, and remembers the users' response in localStorage, or cookies if localStorage isn't available.
 
 ## Usage
 
@@ -8,9 +10,9 @@ Encourage your visitors to do something, without being rude.
 import { cajoler } from 'cajoler'
 
 cajoler(
-  'https',
-  '<h2>Switch to a secure connection?</h2><p>Sites without the "s" in "https:" are susceptible to "wire-tapping" attacks. Curious or mallicious observers can easily see what you are doing. Although Amp-what has no personal information, it does support Https. </p>',
   {
+    key: 'https',
+    nudgePrompt: '<h2>Switch to a secure connection?</h2><p>Sites without the "s" in "https:" are susceptible to "wire-tapping" attacks. Curious or mallicious observers can easily see what you are doing. Although Amp-what has no personal information, it does support Https. </p>',
     showFilter: previousButton =>
                   window.location.protocol === 'http:' && previousButton !== 'no',
     yes:        {
@@ -24,24 +26,20 @@ cajoler(
 )
 ```
 
-The whole interface is one call, `cajoler`, and the usage requires three parameters:
+There is one call, `cajoler`, and receives options:
 
-1. A key to identify the check/message. You may have multiple nudges if you want.
-2. The text of the nudge. Provide this in HTML.
-3. Options. These are expanded in more detail below.
-
-### Options
-
-* `yes` An object with
+* `key`: A key to identify the check/message. You may have multiple nudges if you want, and the users' responses are remembered by this key. If not provided, a generic key is used. 
+* `nudgePrompt`: The text of the nudge. Provide this in HTML, or a function that returns HTML. If the user clicked a button on a previous visit, the function receives it as a parameter. (If not, it receives an empty string.)
+* `yes` A descriptor for the main positive button. It's an object with
     - `verb`: the name of the button signifying an "Yes" answer
     - `callback`: a function to call when the user selects "Yes"
 * `no` An object similar to `yes`, with
-    - `verb`: the name of the button signifying an "Yes" answer
-      ** A blank value indicates there is no "No" button. (Default)**
+    - `verb`: the name of the button signifying an "No" answer
+      _A blank value indicates there is no "No" button. (Default)_
     - `callback`: a function to call when the user selects "No"
 * `maybe` An object similar to `yes`, with
     - `verb`: the name of the button signifying an "Maybe" answer
-      ** A blank value indicates there is no "Maybe" button. (Default) **
+      _A blank value indicates there is no "Maybe" button. (Default)_
     - `callback`: a function to call when the user selects "Maybe"
 * `position` Either `top` or `bottom`, determining where the alert is positioned.
 * `cssClass` The CSS class use for the wrapper component. If you change this from the default of `cajoler`, you'll need to do all your own CSS.
