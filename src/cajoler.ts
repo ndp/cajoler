@@ -5,23 +5,29 @@
  */
 import { BrowserStorage } from './browser-storage/browser-storage'
 
+type ButtonNames = 'yes' | 'no' | 'maybe'
+
 interface ButtonOptions {
   callback?: () => void
   verb?: string
 }
 
 interface CajolerOptions {
-  yes?: ButtonOptions // What to do if the user clicks "Yes" to dismiss.
+  key?: string
+  nudgePrompt?: string | ((previousChoice: ButtonNames | '') => string)
+  yes?: ButtonOptions
   no?: ButtonOptions
   maybe?: ButtonOptions
   delay?: number //   default:  1,000, how long to wait to show alert
   timeout?: number // default: 60,000, how long to leave the dialog up before automatically closing
-  showFilter?: (previousButton: string) => boolean
+  showFilter?: (previousChoice: ButtonNames | '') => boolean
   position?: 'top' | 'bottom'
   cssClass?: string
 }
 
 const defaults = {
+  key: 'cajoler',
+  nudgePrompt: '',
   yes: {
     verb: 'OK'
   },
@@ -37,11 +43,8 @@ const defaults = {
   cssClass: 'cajoler',
 
   // If we already have stored something, we don't do it again
-  showFilter: (previousValue: string): boolean => previousValue === ''
-}
-
-type Cajoler = {
-  (key: string, html: string, options: CajolerOptions): void
+  showFilter: (previousChoice: ButtonNames | ''): boolean =>
+    previousChoice === ''
 }
 
 function button(
@@ -100,13 +103,14 @@ function show(html: string, options: CajolerOptions): void {
   }
 }
 
-export const cajoler: Cajoler = function(key, html, options = {}): void {
+export const cajoler = function(options: CajolerOptions = {}): void {
   const store = new BrowserStorage()
+  const key = options.key || defaults.key
   const storeKey = `cajole-${key}`
-  const previousValue = store.read(storeKey)
+  const previousValue = store.read(storeKey) as ButtonNames | ''
 
   const showFilter = options.showFilter || defaults.showFilter
-  if (showFilter(previousValue) === false) return
+  if (!showFilter(previousValue)) return
 
   options.yes = chainOntoCallbackProp(
     options.yes || defaults.yes,
@@ -119,6 +123,10 @@ export const cajoler: Cajoler = function(key, html, options = {}): void {
     () => store.write(storeKey, 'no')
   )
   // "maybe" button doesn't remember the setting... we'll ask next time.
+
+  const nudge = options.nudgePrompt || defaults.nudgePrompt
+  const html =
+    typeof nudge === 'function' ? nudge(previousValue) : previousValue
 
   show(html, options)
 }
