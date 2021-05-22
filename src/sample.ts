@@ -3,7 +3,7 @@ import { cajoler } from './cajoler'
 cajoler({
   key: 'https',
   nudgePrompt: '<h2>Switch to a secure connection?</h2>',
-  showFilter: previousButton =>
+  showTheNudge: previousButton =>
     window.location.protocol === 'http:' && previousButton !== 'no',
   yes: {
     verb: 'Use a Secure Connection',

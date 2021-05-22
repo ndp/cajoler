@@ -20,7 +20,7 @@ interface CajolerOptions {
   maybe?: ButtonOptions
   delay?: number //   default:  1,000, how long to wait to show alert
   timeout?: number // default: 60,000, how long to leave the dialog up before automatically closing
-  showFilter?: (previousChoice: ButtonNames | '') => boolean
+  showTheNudge?: (previousChoice: ButtonNames | '') => boolean
   position?: 'top' | 'bottom'
   cssClass?: string
 }
@@ -43,7 +43,7 @@ const defaults = {
   cssClass: 'cajoler',
 
   // If we already have stored something, we don't do it again
-  showFilter: (previousChoice: ButtonNames | ''): boolean =>
+  showTheNudge: (previousChoice: ButtonNames | ''): boolean =>
     previousChoice === ''
 }
 
@@ -109,8 +109,8 @@ export const cajoler = function(options: CajolerOptions = {}): void {
   const storeKey = `cajole-${key}`
   const previousValue = store.read(storeKey) as ButtonNames | ''
 
-  const showFilter = options.showFilter || defaults.showFilter
-  if (!showFilter(previousValue)) return
+  const filter = options.showTheNudge || defaults.showTheNudge
+  if (!filter(previousValue)) return
 
   options.yes = chainOntoCallbackProp(
     options.yes || defaults.yes,
