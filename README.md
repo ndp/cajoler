@@ -1,8 +1,29 @@
 # Cajoler
 
+> ca·jole /kəˈjōl/
+> • verb •
+> persuade (someone) to do something by sustained coaxing or flattery.
+
 Encourage your visitors to do something, without being rude. 
 
-Presents a dialog when called, if certain criteria are met, and remembers the users' response in localStorage, or cookies if localStorage isn't available.
+Cajoler presents a clean dialog to the user and get their response.
+I takes care of
+* light-weight client-side storage
+* simple presentation of a dialog without dependency on any web framework.
+
+Some ideas for Cajoler:
+* acknowledge that cookies exist
+* confirm terms-of-use
+* nudge to switch to https
+
+Presents a modeless dialog when called, if certain criteria are met, and 
+remembers the users' response in localStorage (or cookies if localStorage isn't available.)
+By default, if the user chooses "No", they are no asked again, but when buttons
+are shown or not is fully configurable.
+
+Requires no server-side storage.
+
+Appropriate for secondary functionality.
 
 ## Usage
 
@@ -11,16 +32,16 @@ import { cajoler } from 'cajoler'
 
 cajoler(
   {
-    key: 'https',
-    nudgePrompt: '<h2>Switch to a secure connection?</h2><p>Sites without the "s" in "https:" are susceptible to "wire-tapping" attacks. Curious or mallicious observers can easily see what you are doing. Although Amp-what has no personal information, it does support Https. </p>',
+    key: 'foo',
+    nudgePrompt: '<h2>Switch to a secure connection?</h2><p>Sites without the "s" in "https:" are susceptible to "wire-tapping" attacks. Observers can easily see what you are doing.</p>',
     showFilter: previousButton =>
                   window.location.protocol === 'http:' && previousButton !== 'no',
     yes:        {
-      verb:     'Use a Secure Connection',
+      label:    'Use a Secure Connection',
       callback: () => (window.location.protocol = 'https:')
     },
     no:         {
-      verb: 'Dismiss'
+      label: 'Dismiss'
     }
   }
 )
@@ -31,14 +52,14 @@ There is one call, `cajoler`, and receives options:
 * `key`: A key to identify the check/message. You may have multiple nudges if you want, and the users' responses are remembered by this key. If not provided, a generic key is used. 
 * `nudgePrompt`: The text of the nudge. Provide this in HTML, or a function that returns HTML. If the user clicked a button on a previous visit, the function receives it as a parameter. (If not, it receives an empty string.)
 * `yes` A descriptor for the main positive button. It's an object with
-    - `verb`: the name of the button signifying an "Yes" answer
+    - `label`: the name of the button signifying an "Yes" answer
     - `callback`: a function to call when the user selects "Yes"
 * `no` An object similar to `yes`, with
-    - `verb`: the name of the button signifying an "No" answer
+    - `label`: the name of the button signifying an "No" answer
       _A blank value indicates there is no "No" button. (Default)_
     - `callback`: a function to call when the user selects "No"
 * `maybe` An object similar to `yes`, with
-    - `verb`: the name of the button signifying an "Maybe" answer
+    - `label`: the name of the button signifying an "Maybe" answer
       _A blank value indicates there is no "Maybe" button. (Default)_
     - `callback`: a function to call when the user selects "Maybe"
 * `position` Either `top` or `bottom`, determining where the alert is positioned.
@@ -121,13 +142,6 @@ if (__DEV__) {
 You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant)
 and [warning](https://github.com/palmerhq/tsdx#warning) functions.
 
-### Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so
-that it can be imported separately by your users and run through their bundler's loader.
-
 ### Publishing to NPM
 
-We use [np](https://github.com/sindresorhus/np).
+We use [np](https://github.com/sindresorhus/np). Use a command such as `np --branch trunk major`
