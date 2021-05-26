@@ -6,10 +6,10 @@ cajoler({
   showTheNudge: previousButton =>
     window.location.protocol === 'http:' && previousButton !== 'no',
   yes: {
-    verb: 'Use a Secure Connection',
+    label: 'Use a Secure Connection',
     callback: () => (window.location.protocol = 'https:')
   },
   no: {
-    verb: 'Dismiss'
+    label: 'Dismiss'
   }
 })

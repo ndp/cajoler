@@ -5,23 +5,25 @@
  */
 import { BrowserStorage } from './browser-storage/browser-storage'
 
-type ButtonNames = 'yes' | 'no' | 'maybe'
+type ButtonKey = 'yes' | 'no' | 'maybe'
+type MaybeButtonKey = ButtonKey | ''
 
 interface ButtonOptions {
   callback?: () => void
-  verb?: string
+  label?: string
 }
 
-interface CajolerOptions {
+type Position = 'top' | 'bottom'
+
+type CajolerOptions = {
+  [x in ButtonKey]?: ButtonOptions
+} & {
   key?: string
-  nudgePrompt?: string | ((previousChoice: ButtonNames | '') => string)
-  yes?: ButtonOptions
-  no?: ButtonOptions
-  maybe?: ButtonOptions
+  nudgePrompt?: string | ((previousChoice: MaybeButtonKey) => string)
   delay?: number //   default:  1,000, how long to wait to show alert
   timeout?: number // default: 60,000, how long to leave the dialog up before automatically closing
-  showTheNudge?: (previousChoice: ButtonNames | '') => boolean
-  position?: 'top' | 'bottom'
+  showTheNudge?: (previousChoice: MaybeButtonKey) => boolean
+  position?: Position
   cssClass?: string
 }
 
@@ -29,13 +31,13 @@ const defaults = {
   key: 'cajoler',
   nudgePrompt: '',
   yes: {
-    verb: 'OK'
+    label: 'OK'
   },
   no: {
-    verb: ''
+    label: ''
   },
   maybe: {
-    verb: ''
+    label: ''
   },
   delay: 1000,
   timeout: 60 * 1000,
@@ -43,18 +45,18 @@ const defaults = {
   cssClass: 'cajoler',
 
   // If we already have stored something, we don't do it again
-  showTheNudge: (previousChoice: ButtonNames | ''): boolean =>
+  showTheNudge: (previousChoice: MaybeButtonKey): boolean =>
     previousChoice === ''
 }
 
 function button(
   tabIndex: number,
   options: ButtonOptions,
-  defaultOptions: { verb: string; callback?: () => void },
+  defaultOptions: { label: string; callback?: () => void },
   close: () => void
 ) {
   const b = document.createElement('BUTTON')
-  b.innerHTML = options.verb || defaultOptions.verb
+  b.innerHTML = options.label || defaultOptions.label
   b.tabIndex = tabIndex
   b.addEventListener('click', function(_e: MouseEvent) {
     options.callback && options.callback()
@@ -78,10 +80,10 @@ function show(html: string, options: CajolerOptions): void {
   actions.classList.add('actions')
   container.append(actions)
 
-  if (options.no?.verb)
+  if (options.no?.label)
     actions.append(button(3, options.no, defaults.no, close))
 
-  if (options.maybe?.verb)
+  if (options.maybe?.label)
     actions.append(button(2, options.maybe, defaults.maybe, close))
 
   actions.append(button(1, options.yes || {}, defaults.yes, close))
@@ -107,7 +109,7 @@ export const cajoler = function(options: CajolerOptions = {}): void {
   const store = new BrowserStorage()
   const key = options.key || defaults.key
   const storeKey = `cajole-${key}`
-  const previousValue = store.read(storeKey) as ButtonNames | ''
+  const previousValue = store.read(storeKey) as MaybeButtonKey
 
   const filter = options.showTheNudge || defaults.showTheNudge
   if (!filter(previousValue)) return
