@@ -21,7 +21,8 @@ type CajolerOptions = {
   key?: string
   nudgePrompt?: string | ((previousChoice: MaybeButtonKey) => string)
   delay?: number //   default:  1,000, how long to wait to show alert
-  timeout?: number // default: 60,000, how long to leave the dialog up before automatically closing
+  autoCloseDelay?: number // default: 60,000, how long to leave the dialog up before automatically closing
+  onAutoClose?:  () => void
   showTheNudge?: (previousChoice: MaybeButtonKey) => boolean
   position?: Position
   cssClass?: string
@@ -40,7 +41,7 @@ const defaults = {
     label: ''
   },
   delay: 1000,
-  timeout: 60 * 1000,
+  autoCloseDelay: 60 * 1000,
   position: 'top',
   cssClass: 'cajoler',
 
@@ -95,7 +96,8 @@ function show(html: string, options: CajolerOptions): void {
 
   const autoClose = setTimeout(() => {
     close()
-  }, options.timeout || defaults.timeout)
+    if (options.onAutoClose) options.onAutoClose()
+  }, options.autoCloseDelay || defaults.autoCloseDelay)
 
   function close() {
     clearTimeout(autoClose)
@@ -128,7 +130,7 @@ export const cajoler = function(options: CajolerOptions = {}): void {
 
   const nudge = options.nudgePrompt || defaults.nudgePrompt
   const html =
-    typeof nudge === 'function' ? nudge(previousValue) : previousValue
+    typeof nudge === 'function' ? nudge(previousValue) : nudge
 
   show(html, options)
 }

@@ -65,7 +65,8 @@ There is one call, `cajoler`, and receives options:
 * `position` Either `top` or `bottom`, determining where the alert is positioned.
 * `cssClass` The CSS class use for the wrapper component. If you change this from the default of `cajoler`, you'll need to do all your own CSS.
 * `delay` Milliseconds to wait before showing the alert. The default is 1000.
-* `timeout` Milliseconds to show the dialog before automatically closing it. The default is 60,000.
+* `autoCloseDelay` Milliseconds to show the dialog before automatically closing it. The default is 60,000.
+* `onAutoClose` callback to do something when the dialog closes
 * `showFilter`: A function that returns `true` if the cajoling message should be shown to the user. It is passed a value
   of the previous button the user chose. If the user has not chosen before, or local data has been deleted, the
   parameter will be an empty string.
