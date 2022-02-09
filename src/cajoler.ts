@@ -22,7 +22,7 @@ type CajolerOptions = {
   nudgePrompt?: string | ((previousChoice: MaybeButtonKey) => string)
   delay?: number //   default:  1,000, how long to wait to show alert
   autoCloseDelay?: number // default: 60,000, how long to leave the dialog up before automatically closing
-  onAutoClose?:  () => void
+  onAutoClose?: () => void
   showTheNudge?: (previousChoice: MaybeButtonKey) => boolean
   position?: Position
   cssClass?: string
@@ -129,8 +129,7 @@ export const cajoler = function(options: CajolerOptions = {}): void {
   // "maybe" button doesn't remember the setting... we'll ask next time.
 
   const nudge = options.nudgePrompt || defaults.nudgePrompt
-  const html =
-    typeof nudge === 'function' ? nudge(previousValue) : nudge
+  const html = typeof nudge === 'function' ? nudge(previousValue) : nudge
 
   show(html, options)
 }
